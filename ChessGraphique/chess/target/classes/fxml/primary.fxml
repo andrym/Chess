@@ -7,9 +7,9 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.matthieu.FXMLController">
   <children>
-      <VBox prefHeight="400.0" prefWidth="600.0">
+      <VBox prefHeight="450.0" prefWidth="600.0">
          <children>
-          <GridPane fx:id="gdMainGrid" alignment="CENTER" maxWidth="400.0" prefHeight="600.0" prefWidth="400.0">
+          <GridPane fx:id="gdMainGrid" alignment="CENTER" maxWidth="450.0" prefHeight="600.0" prefWidth="400.0">
             <columnConstraints>
               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -19,7 +19,7 @@
               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

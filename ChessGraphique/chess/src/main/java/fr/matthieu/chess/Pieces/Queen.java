@@ -1,34 +1,34 @@
 package fr.matthieu.chess.Pieces;
 
+import fr.matthieu.chess.assets.Assets;
+
 public class Queen extends Piece {
-    // protected int[][] mMoves = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1,
-    // -1}, {0, -1}, {-1, -1}};
+    private int[][] moves = { { -1, 0 }, { -1, 1 }, { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 }, { 0, -1 }, { -1, -1 } };
 
     public Queen(int x, int y, Boolean side) {
-        int[][] moves = { { -1, 0 }, { -1, 1 }, { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 }, { 0, -1 }, { -1, -1 } };
-        this.mX = x;
-        this.mY = y;
-        this.mSide = side;
-        this.mMoves = moves;
-        this.mType = "Queen";
+        super.mX = x;
+        super.mY = y;
+        super.mSide = side;
+        super.mMoves = this.moves;
+        super.mType = "Queen";
         if (side)
-            this.mToken = getClass().getResource("assets/chess_piece_white_queen_T.png");
+            super.mToken = Assets.W_QUEEN;
         else
-            this.mToken = getClass().getResource("assets/chess_piece_black_queen_T.png");
+            super.mToken = Assets.B_QUEEN;
     }
 
     @Override
     public boolean isMoveOk(int x, int y) {
         int moveX;
         int moveY;
-        int dist = this.calcDist(this.mX - x, this.mY - y);
+        int dist = super.calcDist(super.mX - x, super.mY - y);
 
-        this.mDir = 0;
+        super.mDir = 0;
         if ((x < 0 && x > 7) && (y < 0 || y > 7))
             return false;
         for (int[] move : mMoves) {
-            moveX = this.mX;
-            moveY = this.mY;
+            moveX = super.mX;
+            moveY = super.mY;
             for (int i = 0; i <= dist; i++) {
                 moveX += move[0];
                 moveY += move[1];
@@ -37,9 +37,9 @@ public class Queen extends Piece {
                 if ((moveX < 0 || moveX > 7) || (moveY < 0 || moveY > 7))
                     i = 8;
             }
-            this.mDir++;
+            super.mDir++;
         }
-        this.mDir = -1;
+        super.mDir = -1;
         return false;
     }
 }

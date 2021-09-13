@@ -2,15 +2,17 @@ package fr.matthieu.chess.Pieces;
 
 import java.net.URL;
 
+import javafx.scene.image.Image;
+
 public abstract class Piece {
-    protected int       mX;
-    protected int       mY;
-    protected int       mDir = -1;
-    protected int[][]   mMoves;
-    protected String    mType;
-    protected URL       mToken;
-    protected boolean   mHasMoved = false;
-    protected boolean   mSide;
+    protected int mX;
+    protected int mY;
+    protected int mDir = -1;
+    protected int[][] mMoves;
+    protected String mType;
+    protected Image mToken;
+    protected boolean mHasMoved = false;
+    protected boolean mSide;
 
     public int getX() {
         return this.mX;
@@ -27,8 +29,8 @@ public abstract class Piece {
     public void setY(int y) {
         this.mY = y;
     }
-    
-    public URL getToken() {
+
+    public Image getToken() {
         return this.mToken;
     }
 
@@ -41,12 +43,12 @@ public abstract class Piece {
     }
 
     public void setHasMoved(boolean hasMoved) {
-        this.mHasMoved = hasMoved;        
+        this.mHasMoved = hasMoved;
     }
 
     public boolean isDestAllie(int x, int y) {
         return false;
-    }    
+    }
 
     public boolean isDestEnnemie(int x, int y) {
         return false;
@@ -57,7 +59,7 @@ public abstract class Piece {
     }
 
     public String getType() {
-        return this.mType;        
+        return this.mType;
     }
 
     public int getDir() {
@@ -75,7 +77,7 @@ public abstract class Piece {
             return y;
         if (y == 0)
             return x;
-        return -1;         
+        return -1;
     }
 
     public boolean isMoveOk(int x, int y) {
@@ -84,12 +86,15 @@ public abstract class Piece {
 
         if ((x < 0 && x > 7) && (y < 0 || y > 7))
             return false;
+        this.mDir = 0;
         for (int[] move : mMoves) {
             moveX = this.mX + move[1];
             moveY = this.mY + move[0];
             if ((x == moveX && y == moveY))
                 return true;
+            this.mDir++;
         }
+        this.mDir = -1;
         return false;
     }
 

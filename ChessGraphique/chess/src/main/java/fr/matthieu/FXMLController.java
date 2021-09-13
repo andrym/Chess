@@ -30,7 +30,7 @@ import javafx.scene.paint.Color;
 
 public class FXMLController implements Initializable {
 
-    private ImageView[][] pieces = new ImageView[2][8];
+    private ImageView[][] pieces = new ImageView[2][16];
     private int[] mCoordsPiece = { -1, -1 };
     private int[] mCoordsMove = { -1, -1 };
     private Board mBoard = new Board();
@@ -103,18 +103,27 @@ public class FXMLController implements Initializable {
                 panes[i][j] = new Pane();
                 if (cases[i][j].getColor())
                     panes[i][j].setBackground(
-                            new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), Insets.EMPTY)));
+                            new Background(new BackgroundFill(Color.DARKGRAY, new CornerRadii(0), Insets.EMPTY)));
                 else
                     panes[i][j].setBackground(
                             new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
+                gdMainGrid.add(panes[i][j], j, i);
                 if (!cases[i][j].getmIsEmpty()) {
+                    System.out.printf("i: %d  j: %d\n", i, j);
                     if (cases[i][j].getMPiece().getSide()) {
-                        pieces[0][x++] = new ImageView(new Image(new File(cases[i][j].getMPiece().getToken())));
-                    }
-                    else {
+                        System.out.println("MDR: " + cases[i][j].getMPiece().getToken());
+                        pieces[0][x] = new ImageView(cases[i][j].getMPiece().getToken());
+                        pieces[0][x].setFitHeight(50);
+                        pieces[0][x].setFitWidth(50);
+                        gdMainGrid.add(pieces[0][x++], j, i);
+                    } else {
+                        System.out.println("MDR2: " + cases[i][j].getMPiece().getType());
+                        pieces[1][y] = new ImageView(cases[i][j].getMPiece().getToken());
+                        pieces[1][y].setFitHeight(50);
+                        pieces[1][y].setFitWidth(50);
+                        gdMainGrid.add(pieces[1][y++], j, i);
                     }
                 }
-                gdMainGrid.add(panes[i][j], j, i);
             }
         }
 
