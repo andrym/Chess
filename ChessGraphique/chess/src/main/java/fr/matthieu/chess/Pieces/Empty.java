@@ -1,4 +1,4 @@
-package fr.matthieu.chess.Pieces;
+package fr.matthieu.chess.pieces;
 
 public class Empty extends Piece{
     

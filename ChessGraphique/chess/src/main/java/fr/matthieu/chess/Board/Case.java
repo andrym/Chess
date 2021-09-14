@@ -1,7 +1,7 @@
-package fr.matthieu.chess.Board;
+package fr.matthieu.chess.board;
 
 
-import fr.matthieu.chess.Pieces.Piece;
+import fr.matthieu.chess.pieces.Piece;
 
 public class Case {
     protected int           mX;
@@ -68,12 +68,12 @@ public class Case {
         return this.mContent.toString();
     }
 
-    public void setContent(String content) {
-        // if (this.mColor)
-        //     this.mContent = new StringBuilder("\u001b[48;5;244m" + content + " \u001b[0m");
-        // else
-        //     this.mContent = new StringBuilder("\u001b[48;5;237m" + content + " \u001b[0m");
-    }
+    // public void setContent(String content) {
+    //      if (this.mColor)
+    //          this.mContent = new StringBuilder("\u001b[48;5;244m" + content + " \u001b[0m");
+    //      else
+    //          this.mContent = new StringBuilder("\u001b[48;5;237m" + content + " \u001b[0m");
+    // }
 
     public boolean getmIsEmpty() {
         return this.mIsEmpty;

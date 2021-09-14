@@ -1,6 +1,6 @@
 package fr.matthieu.chess;
 
-import fr.matthieu.chess.Game.Game;
+import fr.matthieu.chess.game.Game;
 
 // import java.util.Scanner;
 

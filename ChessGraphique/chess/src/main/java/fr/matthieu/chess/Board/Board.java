@@ -1,12 +1,12 @@
-package fr.matthieu.chess.Board;
+package fr.matthieu.chess.board;
 
-import fr.matthieu.chess.Pieces.Bishop;
-import fr.matthieu.chess.Pieces.King;
-import fr.matthieu.chess.Pieces.Knight;
-import fr.matthieu.chess.Pieces.Pawn;
-import fr.matthieu.chess.Pieces.Piece;
-import fr.matthieu.chess.Pieces.Queen;
-import fr.matthieu.chess.Pieces.Rook;
+import fr.matthieu.chess.pieces.Bishop;
+import fr.matthieu.chess.pieces.King;
+import fr.matthieu.chess.pieces.Knight;
+import fr.matthieu.chess.pieces.Pawn;
+import fr.matthieu.chess.pieces.Piece;
+import fr.matthieu.chess.pieces.Queen;
+import fr.matthieu.chess.pieces.Rook;
 
 public class Board {
     public Case[][] mCases = new Case[8][8];

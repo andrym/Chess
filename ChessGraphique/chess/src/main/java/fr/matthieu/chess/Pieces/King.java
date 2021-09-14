@@ -1,4 +1,4 @@
-package fr.matthieu.chess.Pieces;
+package fr.matthieu.chess.pieces;
 
 import fr.matthieu.chess.assets.Assets;
 

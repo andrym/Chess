@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-import fr.matthieu.chess.Board.Board;
-import fr.matthieu.chess.Board.Case;
+import fr.matthieu.chess.board.Board;
+import fr.matthieu.chess.board.Case;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,6 +21,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -30,10 +35,13 @@ import javafx.scene.paint.Color;
 
 public class FXMLController implements Initializable {
 
+    private final DataFormat imageFormat = new DataFormat("MyImage");
     private ImageView[][] pieces = new ImageView[2][16];
+    private ImageView draggedPiece;
     private int[] mCoordsPiece = { -1, -1 };
     private int[] mCoordsMove = { -1, -1 };
     private Board mBoard = new Board();
+    private Pane panes[][] = new Pane[8][8];
 
     @FXML
     private GridPane gdMainGrid;
@@ -91,37 +99,72 @@ public class FXMLController implements Initializable {
         // }
     }
 
+    public void addDropHandling(Pane pane){
+        pane.setOnDragOver(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasContent(imageFormat) && draggedPiece != null) {
+                e.acceptTransferModes(TransferMode.MOVE);
+            }
+        });
+
+        pane.setOnDragDropped(e -> {
+            Dragboard db = e.getDragboard();
+
+            if (db.hasContent(imageFormat)) {
+                ((Pane)draggedPiece.getParent()).getChildren().remove(draggedPiece);
+                pane.getChildren().add(draggedPiece);
+                e.setDropCompleted(true);
+
+                draggedPiece = null;
+            }
+        });
+    }
+
+    public void initDragablePiece(ImageView piece) {
+        piece.setOnDragDetected(e -> {
+            Dragboard db = piece.startDragAndDrop(TransferMode.MOVE);
+            db.setDragView(piece.snapshot(null, null));
+            ClipboardContent cc = new ClipboardContent();
+            cc.putImage(piece.getImage());
+            db.setContent(cc);
+            draggedPiece = piece;
+        });
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Pane panes[][] = new Pane[8][8];
+        // Pane panes[][] = new Pane[8][8];
         int x = 0;
         int y = 0;
         Case[][] cases = mBoard.getCases();
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                panes[i][j] = new Pane();
+                this.panes[i][j] = new Pane();
                 if (cases[i][j].getColor())
-                    panes[i][j].setBackground(
+                    this.panes[i][j].setBackground(
                             new Background(new BackgroundFill(Color.DARKGRAY, new CornerRadii(0), Insets.EMPTY)));
                 else
-                    panes[i][j].setBackground(
+                    this.panes[i][j].setBackground(
                             new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
+                addDropHandling(panes[i][j]);
                 gdMainGrid.add(panes[i][j], j, i);
                 if (!cases[i][j].getmIsEmpty()) {
                     System.out.printf("i: %d  j: %d\n", i, j);
                     if (cases[i][j].getMPiece().getSide()) {
-                        System.out.println("MDR: " + cases[i][j].getMPiece().getToken());
                         pieces[0][x] = new ImageView(cases[i][j].getMPiece().getToken());
                         pieces[0][x].setFitHeight(50);
                         pieces[0][x].setFitWidth(50);
+                        initDragablePiece(pieces[0][x]);
                         gdMainGrid.add(pieces[0][x++], j, i);
                     } else {
-                        System.out.println("MDR2: " + cases[i][j].getMPiece().getType());
                         pieces[1][y] = new ImageView(cases[i][j].getMPiece().getToken());
                         pieces[1][y].setFitHeight(50);
                         pieces[1][y].setFitWidth(50);
+                        initDragablePiece(pieces[1][y]);
+                        // pieces[1][y].setOnDragDetected(onDragDetected);
                         gdMainGrid.add(pieces[1][y++], j, i);
+
                     }
                 }
             }

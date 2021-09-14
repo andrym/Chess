@@ -1,4 +1,4 @@
-package fr.matthieu.chess.Pieces;
+package fr.matthieu.chess.pieces;
 
 import java.net.URL;
 

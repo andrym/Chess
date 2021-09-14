@@ -1,8 +1,8 @@
-package fr.matthieu.chess.Game;
+package fr.matthieu.chess.game;
 
 import java.util.Scanner;
 
-import fr.matthieu.chess.Board.Board;
+import fr.matthieu.chess.board.Board;
 
 public class Game {
     protected int[] mCoordsPiece = { -1, -1 };
