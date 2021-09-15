@@ -10,7 +10,8 @@ import fr.matthieu.chess.pieces.Rook;
 
 public class Board {
     public Case[][] mCases = new Case[8][8];
-    public String[][] mtakenWhite = { { "\u001b[48;5;237m\u001b[38;5;255m \u265B ", "\u001b[48;5;237m\u001b[38;5;255m 0 " },
+    public String[][] mtakenWhite = {
+            { "\u001b[48;5;237m\u001b[38;5;255m \u265B ", "\u001b[48;5;237m\u001b[38;5;255m 0 " },
             { "\u001b[38;5;255m \u265C ", " 0 " }, { "\u001b[38;5;255m \u265D ", " 0 " },
             { "\u001b[38;5;255m \u265E ", " 0 " }, { "\u001b[38;5;255m \u265F  \u001b[0m", " 0  \u001b[0m" } };
     public String[][] mtakenBlack = { { "\u001b[48;5;244m\u001b[38;5;0m 0 ", "\u001b[48;5;244m\u001b[38;5;0m \u265B " },
@@ -111,45 +112,44 @@ public class Board {
         int x = ox;
         int y = oy;
 
-        if (piece.getType() != "Knight") {
-            while (x != dx || y != dy) {
-                if (x + piece.getMoves()[piece.getDir()][1] >= 0 && x + piece.getMoves()[piece.getDir()][1] < 8)
-                    x += piece.getMoves()[piece.getDir()][1];
-                if (y + piece.getMoves()[piece.getDir()][0] >= 0 && y + piece.getMoves()[piece.getDir()][0] < 8)
-                    y += piece.getMoves()[piece.getDir()][0];
-                if (x < 0 && x > 7 && y < 0 && y > 8)
-                    return false;
-                if (x != dx && y != dy)
-                    if (this.mCases[y][x].getmIsEmpty() == false)
+        if (this.mCases[oy][ox].mPiece.isMoveOk(dy, dx) == true) {
+            if (piece.getType() != "Knight") {
+                while (x != dx || y != dy) {
+                    if (x + piece.getMoves()[piece.getDir()][1] >= 0 && x + piece.getMoves()[piece.getDir()][1] < 8)
+                        x += piece.getMoves()[piece.getDir()][1];
+                    if (y + piece.getMoves()[piece.getDir()][0] >= 0 && y + piece.getMoves()[piece.getDir()][0] < 8)
+                        y += piece.getMoves()[piece.getDir()][0];
+                    if (x < 0 && x > 7 && y < 0 && y > 8)
                         return false;
+                    if (this.mCases[y][x].getmIsEmpty() == false) {
+                        return false;
+                    }
 
+                }
             }
+            if (this.mCases[dy][dx].getmIsEmpty() == false) {
+                if (piece.getType() == "Pawn" && piece.getDir() == 3)
+                    return false;
+                if (this.mCases[dy][dx].mPiece.getSide() != piece.getSide()) {
+                    System.out.println("Enemy");
+                } else
+                    return false;
+            }
+            return true;
         }
-        if (this.mCases[y][x].getmIsEmpty() == false) {
-            if (piece.getType() == "Pawn" && piece.getDir() == 3)
-                return false;
-            if (this.mCases[y][x].mPiece.getSide() != piece.getSide()) {
-                System.out.println("Enemy");
-            } else
-                return false;
-        }
-        return true;
+        return false;
     }
 
     public boolean movePiece(int ox, int oy, int dx, int dy) {
-        if (this.mCases[oy][ox].mPiece.isMoveOk(dy, dx) == true) {
-            if (checkMove(ox, oy, dx, dy, this.mCases[oy][ox].mPiece) == true) {
-                this.mCases[dy][dx].mPiece = this.mCases[oy][ox].mPiece;
-                this.mCases[oy][ox].mPiece = null;
-                // this.mCases[oy][ox].setContent("");
-                // this.mCases[dy][dx].setContent(this.mCases[dy][dx].mPiece.getToken());
-                this.mCases[dy][dx].mPiece.setX(dy);
-                this.mCases[dy][dx].mPiece.setY(dx);
-                this.mCases[dy][dx].mPiece.setHasMoved(true);
-                this.mCases[dy][dx].setmIsEmpty(false);
-                this.mCases[oy][ox].setmIsEmpty(true);
-                return true;
-            }
+        if (checkMove(ox, oy, dx, dy, this.mCases[oy][ox].mPiece) == true) {
+            this.mCases[dy][dx].mPiece = this.mCases[oy][ox].mPiece;
+            this.mCases[oy][ox].mPiece = null;
+            this.mCases[dy][dx].mPiece.setX(dy);
+            this.mCases[dy][dx].mPiece.setY(dx);
+            this.mCases[dy][dx].mPiece.setHasMoved(true);
+            this.mCases[dy][dx].setmIsEmpty(false);
+            this.mCases[oy][ox].setmIsEmpty(true);
+            return true;
         }
         return false;
     }
