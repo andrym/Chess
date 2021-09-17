@@ -95,24 +95,26 @@ public class Board {
             }
     }
 
-    public void printBoard() {
-        int count = 8;
-        for (Case[] caseline : mCases) {
-            for (Case casel : caseline) {
-                System.out.print(casel.getMContent());
-            }
-            System.out.print(count + " ");
-            printTaken(count--);
-            System.out.println();
+    public boolean isDestEnnemy(int dx, int dy, Piece piece) {
+        if (piece.getType() == "Pawn" && (piece.getDir() == 1 || piece.getDir() == 2)) {
+            if (this.mCases[dy][dx].mPiece.getSide() != piece.getSide())
+                return true;
+            return false;
         }
-        System.out.println("A B C D E F G H ");
+        if (!this.mCases[dy][dx].isEmpty()) {
+            if (this.mCases[dy][dx].mPiece.getSide() != piece.getSide()) {
+                return true;
+            } else
+                return false;
+        }
+        return true;
     }
 
     public boolean checkMove(int ox, int oy, int dx, int dy, Piece piece) {
         int x = ox;
         int y = oy;
 
-        if (this.mCases[oy][ox].mPiece.isMoveOk(dy, dx) == true) {
+        if (this.mCases[oy][ox].mPiece.isMoveOk(dy, dx)) {
             if (piece.getType() != "Knight") {
                 while (x != dx || y != dy) {
                     if (x + piece.getMoves()[piece.getDir()][1] >= 0 && x + piece.getMoves()[piece.getDir()][1] < 8)
@@ -121,36 +123,24 @@ public class Board {
                         y += piece.getMoves()[piece.getDir()][0];
                     if (x < 0 && x > 7 && y < 0 && y > 8)
                         return false;
-                    if (this.mCases[y][x].getmIsEmpty() == false) {
+                    if (!this.mCases[y][x].isEmpty() && (x != dx || y != dy)) {
                         return false;
                     }
-
                 }
             }
-            if (this.mCases[dy][dx].getmIsEmpty() == false) {
-                if (piece.getType() == "Pawn" && piece.getDir() == 3)
-                    return false;
-                if (this.mCases[dy][dx].mPiece.getSide() != piece.getSide()) {
-                    System.out.println("Enemy");
-                } else
-                    return false;
-            }
-            return true;
+            return isDestEnnemy(dx, dy, piece);
         }
         return false;
     }
 
     public boolean movePiece(int ox, int oy, int dx, int dy) {
-        if (checkMove(ox, oy, dx, dy, this.mCases[oy][ox].mPiece) == true) {
-            this.mCases[dy][dx].mPiece = this.mCases[oy][ox].mPiece;
-            this.mCases[oy][ox].mPiece = null;
-            this.mCases[dy][dx].mPiece.setX(dy);
-            this.mCases[dy][dx].mPiece.setY(dx);
-            this.mCases[dy][dx].mPiece.setHasMoved(true);
-            this.mCases[dy][dx].setmIsEmpty(false);
-            this.mCases[oy][ox].setmIsEmpty(true);
-            return true;
-        }
-        return false;
+        this.mCases[dy][dx].mPiece = this.mCases[oy][ox].mPiece;
+        this.mCases[oy][ox].mPiece = null;
+        this.mCases[dy][dx].mPiece.setX(dy);
+        this.mCases[dy][dx].mPiece.setY(dx);
+        this.mCases[dy][dx].mPiece.setHasMoved(true);
+        this.mCases[dy][dx].setmIsEmpty(false);
+        this.mCases[oy][ox].setmIsEmpty(true);
+        return true;
     }
 }

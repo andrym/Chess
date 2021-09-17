@@ -75,7 +75,7 @@ public class Case {
     //          this.mContent = new StringBuilder("\u001b[48;5;237m" + content + " \u001b[0m");
     // }
 
-    public boolean getmIsEmpty() {
+    public boolean isEmpty() {
         return this.mIsEmpty;
     }
 

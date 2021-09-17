@@ -5,8 +5,6 @@ Put header here
 
  */
 
-import static javafx.scene.layout.GridPane.getColumnIndex;
-
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
@@ -16,6 +14,7 @@ import java.util.Scanner;
 
 import fr.matthieu.chess.board.Board;
 import fr.matthieu.chess.board.Case;
+import fr.matthieu.chess.pieces.Piece;
 import fr.matthieu.utils.Initializer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -71,6 +70,15 @@ public class FXMLController implements Initializable {
         return this.panes;
     }
 
+    public void removePiece(int dx, int dy) {
+
+        for (int i = 0; i < 32 ; i++) {
+            if (GridPane.getColumnIndex(this.pieces[i]) == dx && GridPane.getRowIndex(this.pieces[i]) == dy) {
+                this.gdMainGrid.getChildren().remove(this.pieces[i]);
+            }
+        }
+    }
+
     public void addDropHandling(Pane pane) {
         pane.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
@@ -92,10 +100,15 @@ public class FXMLController implements Initializable {
             int dy = GridPane.getRowIndex(pane);
             int ox = GridPane.getColumnIndex(draggedPiece);
             int oy = GridPane.getRowIndex(draggedPiece);
+            Piece piece = this.mBoard.mCases[oy][ox].getMPiece();
 
-            if (db.hasImage() && this.mBoard.movePiece(ox, oy, dx, dy)) {
-                ((Pane) this.draggedPiece.getParent()).getChildren().remove(this.draggedPiece);
-                this.gdMainGrid.add(draggedPiece, dx, dy);
+            if (db.hasImage() && this.mBoard.checkMove(ox, oy, dx, dy, piece)) {
+                if (this.mBoard.isDestEnnemy(dx, dy, piece)) {
+                    removePiece(dx, dy);
+                }
+                removePiece(ox, oy);
+                this.mBoard.movePiece(ox, oy, dx, dy);
+                this.gdMainGrid.add(this.draggedPiece, dx, dy);
                 e.setDropCompleted(true);
                 this.draggedPiece = null;
                 e.consume();
@@ -136,15 +149,11 @@ public class FXMLController implements Initializable {
                 // Insets.EMPTY)));
                 addDropHandling(this.panes[i][j]);
                 this.gdMainGrid.add(this.panes[i][j], j, i);
-                System.out.println("MDR");
 
-                if (!cases[i][j].getmIsEmpty()) {
+                if (!cases[i][j].isEmpty()) {
                     this.pieces[x] = init.initPieces(cases[i][j], i, j);
-                    System.out.println("MDR");
                     initDragablePiece(this.pieces[x]);
-                    System.out.println("MDR");
                     this.gdMainGrid.add(this.pieces[x++], j, i);
-                    System.out.println("MDR");
 
                     // if (cases[i][j].getMPiece().getSide()) {
                     // this.pieces[0][x] = new ImageView(cases[i][j].getMPiece().getToken());
