@@ -1,7 +1,5 @@
 package fr.matthieu.chess.pieces;
 
-import java.net.URL;
-
 import javafx.scene.image.Image;
 
 public abstract class Piece {
@@ -12,6 +10,7 @@ public abstract class Piece {
     protected String mType;
     protected Image mToken;
     protected boolean mHasMoved = false;
+    protected boolean mPassed = false;
     protected boolean mSide;
 
     public int getX() {
@@ -64,6 +63,14 @@ public abstract class Piece {
 
     public int getDir() {
         return this.mDir;
+    }
+
+    public boolean getPassed() {
+        return this.mPassed;
+    }
+
+    public void setPassed(boolean passed) {
+        this.mPassed = passed;
     }
 
     public int calcDist(int x, int y) {

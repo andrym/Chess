@@ -95,11 +95,50 @@ public class Board {
             }
     }
 
-    public boolean isDestEnnemy(int dx, int dy, Piece piece) {
-        if (piece.getType() == "Pawn" && (piece.getDir() == 1 || piece.getDir() == 2)) {
-            if (this.mCases[dy][dx].mPiece.getSide() != piece.getSide())
+    public boolean checkPassing(int dx, int dy, Piece piece, boolean moving) {
+        Piece sidePiece;
+
+        if (!moving) {
+            sidePiece = this.mCases[piece.getX()][dx].getMPiece();
+            if (sidePiece.getPassed() && sidePiece.getSide() != piece.getSide()) {
+                movePiece(piece.getY(), piece.getX(), dx, piece.getX());
                 return true;
+            }
             return false;
+
+        } else {
+            if (!this.mCases[dy][dx + 1].isEmpty())
+                sidePiece = this.mCases[dy][dx + 1].getMPiece();
+            else if (!this.mCases[dy][dx - 1].isEmpty())
+                sidePiece = this.mCases[dy][dx - 1].getMPiece();
+            else
+                return true;
+            if (sidePiece.getSide() != piece.getSide()) {
+                piece.setPassed(true);
+                return true;
+            }
+        }
+        return true;
+    }
+
+    public boolean pawnHandler(int dx, int dy, Piece piece) {
+        if (piece.getDir() == 1 || piece.getDir() == 2) {
+            if (!this.mCases[dy][dx].isEmpty()) {
+                if (this.mCases[dy][dx].mPiece.getSide() != piece.getSide())
+                    return true;
+            } else
+                return checkPassing(dx, dy, piece, false);
+        } else if (piece.getDir() == 3) {
+            if (this.mCases[dy][dx].isEmpty())
+                if (this.mCases[dy][dx].isEmpty())
+                    return checkPassing(dx, dy, piece, true);
+        }
+        return true;
+    }
+
+    public boolean isDestEnnemy(int dx, int dy, Piece piece) {
+        if (piece.getType() == "Pawn") {
+            return pawnHandler(dx, dy, piece);
         }
         if (!this.mCases[dy][dx].isEmpty()) {
             if (this.mCases[dy][dx].mPiece.getSide() != piece.getSide()) {
@@ -107,6 +146,7 @@ public class Board {
             } else
                 return false;
         }
+
         return true;
     }
 
@@ -133,14 +173,19 @@ public class Board {
         return false;
     }
 
+    public void removePiece(int x, int y) {
+        this.mCases[y][x].mPiece = null;
+        this.mCases[y][x].setmIsEmpty(true);
+    }
+
     public boolean movePiece(int ox, int oy, int dx, int dy) {
         this.mCases[dy][dx].mPiece = this.mCases[oy][ox].mPiece;
-        this.mCases[oy][ox].mPiece = null;
         this.mCases[dy][dx].mPiece.setX(dy);
         this.mCases[dy][dx].mPiece.setY(dx);
         this.mCases[dy][dx].mPiece.setHasMoved(true);
         this.mCases[dy][dx].setmIsEmpty(false);
-        this.mCases[oy][ox].setmIsEmpty(true);
+        removePiece(ox, oy);
+        // this.mCases[oy][ox].setmIsEmpty(true);
         return true;
     }
 }

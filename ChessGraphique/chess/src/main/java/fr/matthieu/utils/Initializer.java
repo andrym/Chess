@@ -1,17 +1,11 @@
 package fr.matthieu.utils;
 
-import fr.matthieu.FXMLController;
-import fr.matthieu.chess.board.Board;
 import fr.matthieu.chess.board.Case;
-import fr.matthieu.chess.pieces.Piece;
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 

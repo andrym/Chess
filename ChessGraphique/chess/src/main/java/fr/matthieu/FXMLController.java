@@ -5,40 +5,21 @@ Put header here
 
  */
 
-import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 import fr.matthieu.chess.board.Board;
 import fr.matthieu.chess.board.Case;
 import fr.matthieu.chess.pieces.Piece;
 import fr.matthieu.utils.Initializer;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Transform;
 
 public class FXMLController implements Initializable {
 
@@ -72,7 +53,7 @@ public class FXMLController implements Initializable {
 
     public void removePiece(int dx, int dy) {
 
-        for (int i = 0; i < 32 ; i++) {
+        for (int i = 0; i < 32; i++) {
             if (GridPane.getColumnIndex(this.pieces[i]) == dx && GridPane.getRowIndex(this.pieces[i]) == dy) {
                 this.gdMainGrid.getChildren().remove(this.pieces[i]);
             }
@@ -107,7 +88,12 @@ public class FXMLController implements Initializable {
                     removePiece(dx, dy);
                 }
                 removePiece(ox, oy);
-                this.mBoard.movePiece(ox, oy, dx, dy);
+                if (this.mBoard.mCases[oy][dx].getMPiece().getType() == "Pawn"
+                        && (this.mBoard.mCases[oy][dx].getMPiece().getDir() == 1
+                                || this.mBoard.mCases[oy][dx].getMPiece().getDir() == 2)) {
+                                    
+                                }
+                    this.mBoard.movePiece(ox, oy, dx, dy);
                 this.gdMainGrid.add(this.draggedPiece, dx, dy);
                 e.setDropCompleted(true);
                 this.draggedPiece = null;
@@ -118,7 +104,7 @@ public class FXMLController implements Initializable {
     }
 
     public void initDragablePiece(ImageView piece) {
-        piece.setOnDragDetected((MouseEvent e) -> {
+        piece.setOnDragDetected(e -> {
             Dragboard db = piece.startDragAndDrop(TransferMode.ANY);
             ClipboardContent cc = new ClipboardContent();
 
@@ -126,7 +112,12 @@ public class FXMLController implements Initializable {
             cc.putImage(piece.getImage());
             db.setContent(cc);
             this.draggedPiece = piece;
+
             e.consume();
+        });
+
+        piece.setOnDragDone(e -> {
+            System.out.println("Done");
         });
     }
 
@@ -139,35 +130,12 @@ public class FXMLController implements Initializable {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 this.panes[i][j] = init.initPane(cases[i][j]);
-                // if (cases[i][j].getColor())
-                // this.panes[i][j].setBackground(
-                // new Background(new BackgroundFill(Color.DARKGRAY, new CornerRadii(0),
-                // Insets.EMPTY)));
-                // else
-                // this.panes[i][j].setBackground(
-                // new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0),
-                // Insets.EMPTY)));
                 addDropHandling(this.panes[i][j]);
                 this.gdMainGrid.add(this.panes[i][j], j, i);
-
                 if (!cases[i][j].isEmpty()) {
                     this.pieces[x] = init.initPieces(cases[i][j], i, j);
                     initDragablePiece(this.pieces[x]);
                     this.gdMainGrid.add(this.pieces[x++], j, i);
-
-                    // if (cases[i][j].getMPiece().getSide()) {
-                    // this.pieces[0][x] = new ImageView(cases[i][j].getMPiece().getToken());
-                    // this.pieces[0][x].setFitHeight(50);
-                    // this.pieces[0][x].setFitWidth(50);
-                    // initDragablePiece(this.pieces[0][x]);
-                    // this.gdMainGrid.add(this.pieces[0][x++], j, i);
-                    // } else {
-                    // this.pieces[1][y] = new ImageView(cases[i][j].getMPiece().getToken());
-                    // this.pieces[1][y].setFitHeight(50);
-                    // this.pieces[1][y].setFitWidth(50);
-                    // this.gdMainGrid.add(this.pieces[1][y++], j, i);
-
-                    // }
                 }
             }
         }

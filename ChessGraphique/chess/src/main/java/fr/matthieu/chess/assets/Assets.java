@@ -3,7 +3,9 @@ package fr.matthieu.chess.assets;
 import javafx.scene.image.Image;
 
 public class Assets {
-    public final static String PATH = "File:Chess/ChessGraphique/chess/src/main/resources/assets/";
+    // public final static String PATH = "File:Chess/ChessGraphique/chess/src/main/resources/assets/";
+    public final static String PATH = "File:chess/src/main/resources/assets/";
+
     public final static String BlACK_PIECE = PATH + "chess_piece_black_";
     public final static String WHITE_PIECE = PATH + "chess_piece_white_";;
     public final static Image B_PAWN = new Image(BlACK_PIECE + "pawn_T.png");

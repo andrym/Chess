@@ -13,7 +13,7 @@ public class MainApp extends Application {
     private static Stage stage;
 
     @Override
-    public void start(@SuppressWarnings("exports") Stage s) throws IOException {
+    public void start(/*@SuppressWarnings("exports")*/ Stage s) throws IOException {
         stage=s;
         setRoot("primary","");
     }
