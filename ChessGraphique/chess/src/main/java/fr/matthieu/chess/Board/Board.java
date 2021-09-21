@@ -7,6 +7,7 @@ import fr.matthieu.chess.pieces.Pawn;
 import fr.matthieu.chess.pieces.Piece;
 import fr.matthieu.chess.pieces.Queen;
 import fr.matthieu.chess.pieces.Rook;
+import fr.matthieu.chess.pieces.TempPawn;
 
 public class Board {
     public Case[][] mCases = new Case[8][8];
@@ -95,6 +96,12 @@ public class Board {
             }
     }
 
+    public void handlePass(int ox, int oy, Piece piece) {
+        int dy = oy + piece.getMoves()[0][0];
+        TempPawn pieceCp = new TempPawn(ox, dy, piece);
+        this.mCases[dy][ox].setMPiece(pieceCp); 
+    }
+
     public boolean checkPassing(int dx, int dy, Piece piece, boolean moving) {
         Piece sidePiece;
 
@@ -146,7 +153,6 @@ public class Board {
             } else
                 return false;
         }
-
         return true;
     }
 
@@ -179,6 +185,8 @@ public class Board {
     }
 
     public boolean movePiece(int ox, int oy, int dx, int dy) {
+        // if (this.mCases[oy][ox].mPiece.getType() == "Pawn" && this.mCases[oy][ox].mPiece.getPassed())
+        //     handlePass(ox, oy, this.mCases[oy][ox].mPiece);
         this.mCases[dy][dx].mPiece = this.mCases[oy][ox].mPiece;
         this.mCases[dy][dx].mPiece.setX(dy);
         this.mCases[dy][dx].mPiece.setY(dx);

@@ -11,6 +11,7 @@ public abstract class Piece {
     protected Image mToken;
     protected boolean mHasMoved = false;
     protected boolean mPassed = false;
+    protected boolean mPassing = false;
     protected boolean mSide;
 
     public int getX() {
