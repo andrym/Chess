@@ -99,11 +99,11 @@ public class Board {
     public void handlePass(int ox, int oy, Piece piece) {
         int dy = oy + piece.getMoves()[0][0];
         TempPawn pieceCp = new TempPawn(ox, dy, piece);
-        this.mCases[dy][ox].setMPiece(pieceCp); 
+        this.mCases[dy][ox].setMPiece(pieceCp);
     }
 
     public boolean checkPassing(int dx, int dy, Piece piece, boolean moving) {
-        Piece sidePiece;
+        Piece sidePiece = null;
 
         if (!moving) {
             sidePiece = this.mCases[piece.getX()][dx].getMPiece();
@@ -114,13 +114,28 @@ public class Board {
             return false;
 
         } else {
-            if (!this.mCases[dy][dx + 1].isEmpty())
-                sidePiece = this.mCases[dy][dx + 1].getMPiece();
-            else if (!this.mCases[dy][dx - 1].isEmpty())
-                sidePiece = this.mCases[dy][dx - 1].getMPiece();
-            else
+            System.out.println("p");
+            if (dx >= 0 && dx < 7) {
+                System.out.println("pa");
+                if (!this.mCases[dy][dx + 1].isEmpty()) {
+                    sidePiece = this.mCases[dy][dx + 1].getMPiece();
+                    System.out.println("pass: " + this.mCases[dy][dx + 1].getMPiece().getType());
+                }
+            } else if (dx > 0 && dx <= 7) {
+                System.out.println("pas");
+                if (!this.mCases[dy][dx - 1].isEmpty()) {
+                    sidePiece = this.mCases[dy][dx - 1].getMPiece();
+                    System.out.println("pass: " + this.mCases[dy][dx - 1].getMPiece().getType());
+
+                }
+            }
+
+            if (sidePiece == null)
                 return true;
+            System.out.println("passi: " + sidePiece.getSide());
+
             if (sidePiece.getSide() != piece.getSide()) {
+                System.out.println("passing");
                 piece.setPassed(true);
                 return true;
             }
@@ -185,15 +200,16 @@ public class Board {
     }
 
     public boolean movePiece(int ox, int oy, int dx, int dy) {
-        // if (this.mCases[oy][ox].mPiece.getType() == "Pawn" && this.mCases[oy][ox].mPiece.getPassed())
-        //     handlePass(ox, oy, this.mCases[oy][ox].mPiece);
+        if (this.mCases[oy][ox].mPiece.getType() == "Pawn" && !this.mCases[dy][dx].isEmpty())
+            if (this.mCases[dy][dx].mPiece.getType() == "Passing")
+                System.out.println("passing");
+        // handlePass(ox, oy, this.mCases[oy][ox].mPiece);
         this.mCases[dy][dx].mPiece = this.mCases[oy][ox].mPiece;
         this.mCases[dy][dx].mPiece.setX(dy);
         this.mCases[dy][dx].mPiece.setY(dx);
         this.mCases[dy][dx].mPiece.setHasMoved(true);
         this.mCases[dy][dx].setmIsEmpty(false);
         removePiece(ox, oy);
-        // this.mCases[oy][ox].setmIsEmpty(true);
         return true;
     }
 }
