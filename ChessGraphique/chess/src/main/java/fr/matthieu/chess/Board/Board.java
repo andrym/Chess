@@ -108,34 +108,24 @@ public class Board {
         if (!moving) {
             sidePiece = this.mCases[piece.getX()][dx].getMPiece();
             if (sidePiece.getPassed() && sidePiece.getSide() != piece.getSide()) {
-                movePiece(piece.getY(), piece.getX(), dx, piece.getX());
+                // movePiece(piece.getY(), piece.getX(), dx, piece.getX());
                 return true;
             }
             return false;
 
         } else {
-            System.out.println("p");
             if (dx >= 0 && dx < 7) {
-                System.out.println("pa");
                 if (!this.mCases[dy][dx + 1].isEmpty()) {
                     sidePiece = this.mCases[dy][dx + 1].getMPiece();
-                    System.out.println("pass: " + this.mCases[dy][dx + 1].getMPiece().getType());
                 }
             } else if (dx > 0 && dx <= 7) {
-                System.out.println("pas");
                 if (!this.mCases[dy][dx - 1].isEmpty()) {
                     sidePiece = this.mCases[dy][dx - 1].getMPiece();
-                    System.out.println("pass: " + this.mCases[dy][dx - 1].getMPiece().getType());
-
                 }
             }
-
             if (sidePiece == null)
                 return true;
-            System.out.println("passi: " + sidePiece.getSide());
-
             if (sidePiece.getSide() != piece.getSide()) {
-                System.out.println("passing");
                 piece.setPassed(true);
                 return true;
             }
@@ -175,6 +165,8 @@ public class Board {
         int x = ox;
         int y = oy;
 
+        if (this.mCases[oy][ox].mPiece == null)
+            System.out.println("CHEH");
         if (this.mCases[oy][ox].mPiece.isMoveOk(dy, dx)) {
             if (piece.getType() != "Knight") {
                 while (x != dx || y != dy) {
@@ -195,11 +187,14 @@ public class Board {
     }
 
     public void removePiece(int x, int y) {
+        System.out.println("WAWJESUISTROPBETE2");
+
         this.mCases[y][x].mPiece = null;
         this.mCases[y][x].setmIsEmpty(true);
     }
 
     public boolean movePiece(int ox, int oy, int dx, int dy) {
+        System.out.printf("WAWJESUISTROPBETE1 ox: %d  oy: %d dx: %d dy %d\n", ox, oy, dx, dy);
         if (this.mCases[oy][ox].mPiece.getType() == "Pawn" && !this.mCases[dy][dx].isEmpty())
             if (this.mCases[dy][dx].mPiece.getType() == "Passing")
                 System.out.println("passing");

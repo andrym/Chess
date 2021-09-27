@@ -88,11 +88,6 @@ public class FXMLController implements Initializable {
                     removePiece(dx, dy);
                 }
                 removePiece(ox, oy);
-                if (this.mBoard.mCases[oy][dx].getMPiece().getType() == "Pawn"
-                        && (this.mBoard.mCases[oy][dx].getMPiece().getDir() == 1
-                                || this.mBoard.mCases[oy][dx].getMPiece().getDir() == 2)) {
-
-                }
                 this.mBoard.movePiece(ox, oy, dx, dy);
                 this.gdMainGrid.add(this.draggedPiece, dx, dy);
                 e.setDropCompleted(true);
