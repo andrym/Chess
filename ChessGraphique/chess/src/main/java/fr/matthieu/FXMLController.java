@@ -6,20 +6,25 @@ Put header here
  */
 
 import java.net.URL;
+
 import java.util.ResourceBundle;
 
 import fr.matthieu.chess.board.Board;
 import fr.matthieu.chess.board.Case;
 import fr.matthieu.chess.pieces.Piece;
 import fr.matthieu.utils.Initializer;
+import javafx.beans.Observable;
+import javafx.beans.binding.DoubleExpression;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Transform;
 
 public class FXMLController implements Initializable {
 
@@ -102,12 +107,16 @@ public class FXMLController implements Initializable {
         piece.setOnDragDetected(e -> {
             Dragboard db = piece.startDragAndDrop(TransferMode.ANY);
             ClipboardContent cc = new ClipboardContent();
-
-            db.setDragView(piece.snapshot(null, null));
+            SnapshotParameters param = new SnapshotParameters();
+            
+            param.setTransform(Transform.translate(-50, -50));
+            db.setDragView(piece.snapshot(param, null));
             cc.putImage(piece.getImage());
             db.setContent(cc);
             this.draggedPiece = piece;
-
+            // this.gdMainGrid.getChildren().remove(piece);
+            // this.draggedPiece.setTranslateX(-piece.getImage().getWidth()/2);
+            // this.draggedPiece.setTranslateY(-piece.getImage().getHeight()/2);
             e.consume();
         });
 
@@ -116,8 +125,28 @@ public class FXMLController implements Initializable {
         });
     }
 
+    private void onWidth(Observable widthProperty) {
+        // System.out.println("resize width callback");
+        double newWidth = ((DoubleExpression) widthProperty).getValue();        
+    }
+    private void onHeight(Observable heightProperty) {
+        // System.out.println("resize height callback");
+        double newHeight = ((DoubleExpression) heightProperty).getValue();
+        gdMainGrid.setPrefHeight(newHeight);
+        gdMainGrid.setMaxHeight(newHeight);
+        gdMainGrid.setPrefWidth(newHeight);
+        gdMainGrid.setMaxWidth(newHeight);
+        for (ImageView piece : this.pieces) {
+            piece.setFitHeight(newHeight/8);
+            piece.setFitWidth(newHeight/8);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        MainApp.getStage().widthProperty().addListener(widthProperty -> onWidth(widthProperty));
+        MainApp.getStage().heightProperty().addListener(heightProperty -> onHeight(heightProperty));
+
         int x = 0;
         Case[][] cases = mBoard.getCases();
         Initializer init = new Initializer();
@@ -131,7 +160,9 @@ public class FXMLController implements Initializable {
                     this.pieces[x] = init.initPieces(cases[i][j], i, j);
                     initDragablePiece(this.pieces[x]);
                     this.gdMainGrid.add(this.pieces[x++], j, i);
+                    // GridPane.setFillWidth(this.pieces[x - 1], true);
                 }
+                GridPane.setFillWidth(this.panes[i][j], true);
             }
         }
 
