@@ -2,6 +2,7 @@ package fr.matthieu.chess.board;
 
 
 import fr.matthieu.chess.pieces.Piece;
+import fr.matthieu.utils.Utils;
 
 public class Case {
     protected int           mX;
@@ -17,11 +18,11 @@ public class Case {
         this.mPiece = piece;
         if ((x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0)) {
             // this.mContent = new StringBuilder("\u001b[48;5;237m" + piece.getToken() + " \u001b[0m");
-            this.mColor = true;
+            this.mColor = Utils.WHITE;
         }
         else{
             // this.mContent = new StringBuilder("\u001b[48;5;244m" + piece.getToken() + " \u001b[0m");
-            this.mColor = false;
+            this.mColor = Utils.BLACK;
         }
         this.mIsEmpty = false;
     }
@@ -40,31 +41,31 @@ public class Case {
     }
 
 
-    public int getMX() {
+    public int getX() {
         return this.mX;
     }
 
-    public void setMX(int x) {
+    public void setX(int x) {
         this.mX = x;
     }
 
-    public int getMY() {
+    public int getY() {
         return this.mY;
     }
 
-    public void setMY(int y) {
+    public void setY(int y) {
         this.mY = y;
     }
 
-    public Piece getMPiece() {
+    public Piece getPiece() {
         return this.mPiece;
     }
 
-    public void setMPiece(Piece piece) {
+    public void setPiece(Piece piece) {
         this.mPiece = piece;
     }
 
-    public String getMContent() {
+    public String getContent() {
         return this.mContent.toString();
     }
 

@@ -74,7 +74,7 @@ public class FXMLController implements Initializable {
             int oy = GridPane.getRowIndex(draggedPiece);
 
             if (db.hasImage() && draggedPiece != null
-                    && this.mBoard.checkMove(ox, oy, dx, dy, this.mBoard.mCases[oy][ox].getMPiece())) {
+                    && this.mBoard.checkMove(ox, oy, dx, dy, this.mBoard.mCases[oy][ox].getPiece())) {
                 e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
             e.consume();
@@ -86,9 +86,13 @@ public class FXMLController implements Initializable {
             int dy = GridPane.getRowIndex(pane);
             int ox = GridPane.getColumnIndex(draggedPiece);
             int oy = GridPane.getRowIndex(draggedPiece);
-            Piece piece = this.mBoard.mCases[oy][ox].getMPiece();
+            Piece piece = this.mBoard.mCases[oy][ox].getPiece();
 
-            if (db.hasImage() && this.mBoard.checkMove(ox, oy, dx, dy, piece)) {
+            if (db.hasImage()) {
+                if (piece.getType() == "Pawn" && this.mBoard.checkPassing(dx, dy, piece, true)){
+                    System.out.printf("DropAdded at x: %d y: %d\n", ox, (oy + piece.getMoves()[0][0]));    
+                    addDropHandling(this.panes[oy + piece.getMoves()[0][0]][ox]);
+                }
                 if (this.mBoard.isDestEnnemy(dx, dy, piece)) {
                     removePiece(dx, dy);
                 }

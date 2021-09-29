@@ -1,5 +1,6 @@
 package fr.matthieu.utils;
 
+import fr.matthieu.chess.board.Board;
 import fr.matthieu.chess.board.Case;
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
@@ -11,14 +12,28 @@ import javafx.scene.paint.Color;
 
 public class Initializer {
 
+    public static void initCases(Board board) {
+        // Case[][] cases = new Case[8][8];
+        for (int i = 0; i < 16; i++) {
+            generatePiece()
+        }
+        // generateKing(board);
+        // generateQueen(board);
+        // generateBishop(board);
+        // generateKnight(board);
+        // generateRook(board);
+        // generatePawns(board);
+        // generateEmptyCases(board);
+    }
+
     public ImageView initPieces(Case curCase, int i, int j) {
         ImageView piece;
-        if (curCase.getMPiece().getSide()) {
-            piece = new ImageView(curCase.getMPiece().getToken());
+        if (curCase.getPiece().getSide()) {
+            piece = new ImageView(curCase.getPiece().getToken());
             piece.setFitHeight(50);
             piece.setFitWidth(50);
         } else {
-            piece = new ImageView(curCase.getMPiece().getToken());
+            piece = new ImageView(curCase.getPiece().getToken());
             piece.setFitHeight(50);
             piece.setFitWidth(50);
         }
