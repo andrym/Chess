@@ -4,10 +4,10 @@ public class TempPawn extends Piece{
     protected Piece copy;
 
     public TempPawn (int x, int y, Piece piece) {
-        super.mX = x;
-        super.mY = y;
-        super.mSide = piece.getSide();
-        super.mType = "Passing";
+        super.x = x;
+        super.y = y;
+        super.side = piece.getSide();
+        super.type = "Passing";
         this.copy = piece;
     }
 

@@ -3,47 +3,47 @@ package fr.matthieu.chess.pieces;
 import javafx.scene.image.Image;
 
 public abstract class Piece {
-    protected int mX;
-    protected int mY;
-    protected int mDir = -1;
-    protected int[][] mMoves;
-    protected String mType;
-    protected Image mToken;
-    protected boolean mHasMoved = false;
-    protected boolean mPassed = false;
-    protected boolean mPassing = false;
-    protected boolean mSide;
+    protected int x;
+    protected int y;
+    protected int dir = -1;
+    protected int[][] moves;
+    protected String type;
+    protected Image token;
+    protected boolean hasMoved = false;
+    protected boolean passed = false;
+    protected boolean passing = false;
+    protected boolean side;
 
     public int getX() {
-        return this.mX;
+        return this.x;
     }
 
     public void setX(int x) {
-        this.mX = x;
+        this.x = x;
     }
 
     public int getY() {
-        return this.mY;
+        return this.y;
     }
 
     public void setY(int y) {
-        this.mY = y;
+        this.y = y;
     }
 
     public Image getToken() {
-        return this.mToken;
+        return this.token;
     }
 
     public boolean getSide() {
-        return this.mSide;
+        return this.side;
     }
 
     public boolean getHasMoved() {
-        return this.mHasMoved;
+        return this.hasMoved;
     }
 
     public void setHasMoved(boolean hasMoved) {
-        this.mHasMoved = hasMoved;
+        this.hasMoved = hasMoved;
     }
 
     public boolean isDestAllie(int x, int y) {
@@ -55,23 +55,23 @@ public abstract class Piece {
     }
 
     public int[][] getMoves() {
-        return this.mMoves;
+        return this.moves;
     }
 
     public String getType() {
-        return this.mType;
+        return this.type;
     }
 
     public int getDir() {
-        return this.mDir;
+        return this.dir;
     }
 
     public boolean getPassed() {
-        return this.mPassed;
+        return this.passed;
     }
 
     public void setPassed(boolean passed) {
-        this.mPassed = passed;
+        this.passed = passed;
     }
 
     public int calcDist(int x, int y) {
@@ -94,19 +94,19 @@ public abstract class Piece {
 
         if ((x < 0 && x > 7) && (y < 0 || y > 7))
             return false;
-        this.mDir = 0;
-        for (int[] move : mMoves) {
-            moveX = this.mX + move[1];
-            moveY = this.mY + move[0];
+        this.dir = 0;
+        for (int[] move : moves) {
+            moveX = this.x + move[1];
+            moveY = this.y + move[0];
             if ((x == moveX && y == moveY))
                 return true;
-            this.mDir++;
+            this.dir++;
         }
-        this.mDir = -1;
+        this.dir = -1;
         return false;
     }
 
     public void printInfo() {
-        System.out.println(this.mToken);
+        System.out.println(this.token);
     }
 }

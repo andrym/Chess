@@ -15,7 +15,7 @@ public class Initializer {
     public static void initCases(Board board) {
         // Case[][] cases = new Case[8][8];
         for (int i = 0; i < 16; i++) {
-            generatePiece()
+            // generatePiece();
         }
         // generateKing(board);
         // generateQueen(board);

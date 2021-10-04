@@ -8,18 +8,18 @@ public class Pawn extends Piece {
 
     public Pawn(int x, int y, Boolean side) {
 
-        super.mX = x;
-        super.mY = y;
-        super.mSide = side;
+        super.x = x;
+        super.y = y;
+        super.side = side;
         if (side)
-            super.mMoves = this.movesUp;
+            super.moves = this.movesUp;
         else
-            super.mMoves = this.movesDown;
-        super.mType = "Pawn";
+            super.moves = this.movesDown;
+        super.type = "Pawn";
         if (side)
-            super.mToken = Assets.W_PAWN;
+            super.token = Assets.W_PAWN;
         else
-            super.mToken = Assets.B_PAWN;
+            super.token = Assets.B_PAWN;
     }
 
     @Override
@@ -29,18 +29,18 @@ public class Pawn extends Piece {
 
         if ((x < 0 && x > 7) && (y < 0 || y > 7))
             return false;
-        super.mDir = 0;
-        for (int[] move : super.mMoves) {
-            moveX = super.mX + move[0];
-            moveY = super.mY + move[1];
+        super.dir = 0;
+        for (int[] move : super.moves) {
+            moveX = super.x + move[0];
+            moveY = super.y + move[1];
             if ((x == moveX && y == moveY)) {
-                if (super.mDir == 3 && super.mHasMoved == true)
+                if (super.dir == 3 && super.hasMoved == true)
                     return false;
                 return true;
             }
-            super.mDir++;
+            super.dir++;
         }
-        super.mDir = -1;
+        super.dir = -1;
         return false;
     }
 }

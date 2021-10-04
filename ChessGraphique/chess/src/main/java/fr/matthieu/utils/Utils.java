@@ -1,6 +1,5 @@
 package fr.matthieu.utils;
 
-import java.util.HashMap;
 
 public class Utils {
     public final static int W_ROW = 0;
@@ -15,6 +14,8 @@ public class Utils {
     public final static int L_BP = 5;
     public final static int KG = 4;
     public final static int QN = 3;
+
+
 
     public final static boolean WHITE = true;
     public final static boolean BLACK = false;

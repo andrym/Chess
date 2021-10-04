@@ -6,15 +6,15 @@ public class Bishop extends Piece{
     private int[][] moves = {{-1, 1}, {1, 1}, {1, -1}, {-1, -1}};
 
     public Bishop(int x, int y, Boolean side) {
-        super.mX = x;
-        super.mY = y;
-        super.mSide = side;
-        super.mMoves = this.moves;
-        super.mType = "Bishop";
+        super.x = x;
+        super.y = y;
+        super.side = side;
+        super.moves = this.moves;
+        super.type = "Bishop";
         if (side)
-            super.mToken = Assets.W_BISHOP;
+            super.token = Assets.W_BISHOP;
         else
-            super.mToken = Assets.B_BISHOP;
+            super.token = Assets.B_BISHOP;
 
     }
 
@@ -22,14 +22,14 @@ public class Bishop extends Piece{
     public boolean isMoveOk(int x, int y) {
         int moveX;
         int moveY;
-        int dist = super.calcDist(super.mX - x, super.mY - y);
+        int dist = super.calcDist(super.x - x, super.y - y);
 
         if ((x < 0 && x > 7) && (y < 0 || y > 7))
             return false;
-        super.mDir = 0;
-        for (int[] move : super.mMoves) {
-            moveX = super.mX;
-            moveY = super.mY;
+        super.dir = 0;
+        for (int[] move : super.moves) {
+            moveX = super.x;
+            moveY = super.y;
             for (int i = 0; i <= dist; i++) {
                 moveX += move[0];
                 moveY += move[1];
@@ -38,9 +38,9 @@ public class Bishop extends Piece{
                 if ((moveX < 0 || moveX > 7) || (moveY < 0 || moveY > 7)) 
                     i = 8;
             }
-            super.mDir++;
+            super.dir++;
         }
-        super.mDir = -1;
+        super.dir = -1;
         return false;
     }
 }
