@@ -83,20 +83,20 @@ public class Board {
     }
 
     // public void printTaken(int count) {
-    //     if (count == 1 || count == 2)
-    //         for (String[] piece : this.mtakenBlack) {
-    //             if (count == 2)
-    //                 System.out.print(piece[1]);
-    //             else
-    //                 System.out.print(piece[0]);
-    //         }
-    //     if (count == 7 || count == 8)
-    //         for (String[] piece : this.mtakenWhite) {
-    //             if (count == 8)
-    //                 System.out.print(piece[1]);
-    //             else
-    //                 System.out.print(piece[0]);
-    //         }
+    // if (count == 1 || count == 2)
+    // for (String[] piece : this.mtakenBlack) {
+    // if (count == 2)
+    // System.out.print(piece[1]);
+    // else
+    // System.out.print(piece[0]);
+    // }
+    // if (count == 7 || count == 8)
+    // for (String[] piece : this.mtakenWhite) {
+    // if (count == 8)
+    // System.out.print(piece[1]);
+    // else
+    // System.out.print(piece[0]);
+    // }
     // }
 
     public void handlePass(int ox, int oy, Piece piece) {
@@ -112,13 +112,11 @@ public class Board {
         Piece sidePiece = null;
 
         if (dx >= 0 && dx < 7) {
-            System.out.println("OHOH");
             if (!this.cases[dy][dx + 1].isEmpty()) {
                 sidePiece = this.cases[dy][dx + 1].getPiece();
             }
         }
         if (dx > 0 && dx <= 7) {
-            System.out.println("Stinky");
             if (!this.cases[dy][dx - 1].isEmpty()) {
                 sidePiece = this.cases[dy][dx - 1].getPiece();
             }
@@ -199,16 +197,16 @@ public class Board {
     }
 
     public void printDebug(Piece oPiece, Piece dPiece, int ox, int oy, int dx, int dy) {
-        System.out.printf("Piece: \norigin: %s | x: %d y: %d\ndest: %s | x: %d y: %d\n", oPiece, ox, oy, dPiece, dx,
-                dy);
+        if (dPiece != null)
+            System.out.printf("Piece: \norigin: %s | x: %d y: %d\ndest: %s | x: %d y: %d\n", oPiece.getType(), ox, oy, dPiece.getType(), dx,
+                    dy);
+        else
+            System.out.printf("Piece: \norigin: %s | x: %d y: %d\ndest: Empty | x: %d y: %d\n", oPiece.getType(), ox, oy, dx, dy);
 
     }
 
     public boolean movePiece(Case oCase, Case dCase, int ox, int oy, int dx, int dy) {
-        // System.out.printf("WAWJESUISTROPBETE1 ox: %d oy: %d
-        // dx: %d dy %d\n", ox, oy,
-        // dx, dy);
-        if (oCase.getPiece().getType() == "Pawn" && dCase.getPiece().getDir() == 3)
+        if (oCase.getPiece().getType() == "Pawn" && oCase.getPiece().getDir() == 3)
             checkPassing(ox, oy, oCase.getPiece(), true);
         printDebug(oCase.getPiece(), dCase.getPiece(), ox, oy, dx, dy);
         // handlePass(ox, oy,

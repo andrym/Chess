@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -36,4 +37,7 @@
          </children>
       </VBox>
   </children>
+   <padding>
+      <Insets top="50.0" />
+   </padding>
 </VBox>

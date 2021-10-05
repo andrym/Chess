@@ -22,8 +22,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.transform.Transform;
 
 public class FXMLController implements Initializable {
@@ -89,8 +91,8 @@ public class FXMLController implements Initializable {
             Piece piece = this.mBoard.getCases()[oy][ox].getPiece();
 
             if (db.hasImage()) {
-                if (piece.getType() == "Pawn" && this.mBoard.checkPassing(dx, dy, piece, true)){
-                    System.out.printf("DropAdded at x: %d y: %d\n", ox, (oy + piece.getMoves()[0][0]));    
+                if (piece.getType() == "Pawn" && this.mBoard.checkPassing(dx, dy, piece, true)) {
+                    System.out.printf("DropAdded at x: %d y: %d\n", ox, (oy + piece.getMoves()[0][0]));
                     addDropHandling(this.panes[oy + piece.getMoves()[0][0]][ox]);
                 }
                 if (this.mBoard.isDestEnnemy(dx, dy, piece)) {
@@ -112,7 +114,7 @@ public class FXMLController implements Initializable {
             Dragboard db = piece.startDragAndDrop(TransferMode.ANY);
             ClipboardContent cc = new ClipboardContent();
             SnapshotParameters param = new SnapshotParameters();
-            
+
             param.setTransform(Transform.translate(-50, -50));
             db.setDragView(piece.snapshot(param, null));
             cc.putImage(piece.getImage());
@@ -131,18 +133,41 @@ public class FXMLController implements Initializable {
 
     private void onWidth(Observable widthProperty) {
         // System.out.println("resize width callback");
-        double newWidth = ((DoubleExpression) widthProperty).getValue();        
+        // double newWidth = ((DoubleExpression) widthProperty).getValue();
+        // double newHeight = gdMainGrid.getHeight();
+        // // gdMainGrid.setPrefHeight(newHeight);
+        // gdMainGrid.setMaxHeight(newHeight);
+        // // gdMainGrid.setPrefWidth(newHeight);
+        // gdMainGrid.setMaxWidth(newHeight);
+        // for (ImageView piece : this.pieces) {
+        //     piece.setFitHeight(newHeight / 8);
+        //     piece.setFitWidth(newHeight / 8);
+        // }
+        // for (ColumnConstraints column : gdMainGrid.getColumnConstraints()) {
+        //     // column.setPrefWidth(newHeight/8);
+        //     column.setMaxWidth(newHeight / 8);
+        // }
+        // for (RowConstraints row : gdMainGrid.getRowConstraints()) {
+        //     // row.setPrefHeight(newHeight/8);
+        //     row.setMaxHeight(newHeight / 8);
+        // }
     }
+
     private void onHeight(Observable heightProperty) {
-        // System.out.println("resize height callback");
-        double newHeight = ((DoubleExpression) heightProperty).getValue();
-        gdMainGrid.setPrefHeight(newHeight);
+        double newHeight = ((DoubleExpression) heightProperty).getValue() - 100;
         gdMainGrid.setMaxHeight(newHeight);
-        gdMainGrid.setPrefWidth(newHeight);
+        gdMainGrid.setMinHeight(newHeight);
         gdMainGrid.setMaxWidth(newHeight);
         for (ImageView piece : this.pieces) {
-            piece.setFitHeight(newHeight/8);
-            piece.setFitWidth(newHeight/8);
+            piece.setFitHeight(newHeight / 8);
+            piece.setFitWidth(newHeight / 8);
+        }
+        for (ColumnConstraints column : gdMainGrid.getColumnConstraints()) {
+            column.setMaxWidth(newHeight / 8);
+        }
+        for (RowConstraints row : gdMainGrid.getRowConstraints()) {
+            row.setMinHeight(newHeight/8);
+            row.setMaxHeight(newHeight / 8);
         }
     }
 
