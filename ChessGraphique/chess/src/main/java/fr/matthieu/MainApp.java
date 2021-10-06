@@ -16,8 +16,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(/*@SuppressWarnings("exports")*/ Stage s) throws IOException {
-        stage=s;
-        setRoot("primary","");
+        Stage stage = (new FXMLLoader(MainApp.class.getResource("/fxml/"+"primary" + ".fxml"))).load();
+        stage.setTitle("");
+        stage.show();
     }
 
     static void setRoot(String fxml) throws IOException {

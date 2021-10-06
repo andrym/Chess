@@ -27,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.transform.Transform;
+import javafx.stage.Stage;
 
 public class FXMLController implements Initializable {
 
@@ -37,6 +38,8 @@ public class FXMLController implements Initializable {
 
     @FXML
     private GridPane gdMainGrid;
+
+    @FXML private Stage stage;
 
     public void setDraggedPiece(ImageView draggedPiece) {
         this.draggedPiece = draggedPiece;
@@ -173,8 +176,8 @@ public class FXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        MainApp.getStage().widthProperty().addListener(widthProperty -> onWidth(widthProperty));
-        MainApp.getStage().heightProperty().addListener(heightProperty -> onHeight(heightProperty));
+        stage.widthProperty().addListener(widthProperty -> onWidth(widthProperty));
+        stage.heightProperty().addListener(heightProperty -> onHeight(heightProperty));
 
         int x = 0;
         Case[][] cases = mBoard.getCases();

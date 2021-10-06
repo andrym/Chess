@@ -11,7 +11,7 @@ public class Knight extends Piece {
         super.side = side;
         super.moves = this.moves;
         super.type = "Knight";
-        if (side)
+        if (super.side)
             super.token = Assets.W_KNIGHT;
         else
             super.token = Assets.B_KNIGHT;

@@ -95,9 +95,11 @@ public abstract class Piece {
         if ((x < 0 && x > 7) && (y < 0 || y > 7))
             return false;
         this.dir = 0;
-        for (int[] move : moves) {
-            moveX = this.x + move[1];
-            moveY = this.y + move[0];
+        System.out.println("ismoveOKStart");
+        for (int[] move : this.moves) {
+            moveX = this.x + move[0];
+            moveY = this.y + move[1];
+            System.out.printf("IsMoveOk movex: %d moveY: %d x: %d y: %d move1: %d move0: %d thisx: %d thisy: %d\n", moveX, moveY, x, y, move[1], move[0], this.x, this.y);
             if ((x == moveX && y == moveY))
                 return true;
             this.dir++;
