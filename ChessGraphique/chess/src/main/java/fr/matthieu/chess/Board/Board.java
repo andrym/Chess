@@ -172,24 +172,17 @@ public class Board {
             System.out.println("CHEH");
         if (this.cases[oy][ox].getPiece().isMoveOk(dy, dx)) {
             if (piece.getType() != "Knight" ) {
-                // System.out.println("LOL");
                 while (x != dx || y != dy) {
-                    System.out.printf("LOL x: %d y: %d Dir: %d move1: %d move2: %d\n", x, y, piece.getDir(), piece.getMoves()[piece.getDir()][1], piece.getMoves()[piece.getDir()][0]);
-                    System.out.printf("LOL dx: %d dy: %d\n", dx, dy);
                     if (x + piece.getMoves()[piece.getDir()][1] >= 0 && x + piece.getMoves()[piece.getDir()][1] < 8)
                         x += piece.getMoves()[piece.getDir()][1];
                     if (y + piece.getMoves()[piece.getDir()][0] >= 0 && y + piece.getMoves()[piece.getDir()][0] < 8)
                         y += piece.getMoves()[piece.getDir()][0];
                     if ((x < 0 || x > 7) || (y < 0 || y > 8))
                         return false;
-                        System.out.println("HEIN1");
                     if (!this.cases[y][x].isEmpty() && (x != dx || y != dy)) {
-                        System.out.println("HEIN3");
 
                         return false; 
                     }
-                    System.out.println("HEIN2");
-
                 }
             }
             return isDestEnnemy(dx, dy, piece);
