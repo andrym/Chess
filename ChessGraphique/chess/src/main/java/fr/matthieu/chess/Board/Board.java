@@ -126,14 +126,17 @@ public class Board {
         if (sidePiece.getSide() != piece.getSide()) {
             if (dropped) {
                 System.out.println(
-                        "Handle Pass x: " + piece.getY() + " y: " + piece.getX() + " Type: " + piece.getType());
-                handlePass(piece.getY(), piece.getX(), piece);
+                        "Handle Pass x: " + piece.getY() + " y: " + piece.getX() + " Type: " + piece.getType() + "dir: " + piece.getDir());
+                // handlePass(piece.getY(), piece.getX(), piece);
                 piece.setPassed(true);
             } else
                 System.out.println("PasDropped");
+                piece.setPassed(true);
 
             return true;
         }
+        else
+            piece.setPassed(false);
         return false;
     }
 
@@ -208,7 +211,9 @@ public class Board {
 
     public boolean movePiece(Case oCase, Case dCase, int ox, int oy, int dx, int dy) {
         if (oCase.getPiece().getType() == "Pawn" && oCase.getPiece().getDir() == 3)
-            checkPassing(ox, oy, oCase.getPiece(), true);
+            if (oCase.getPiece().getPassed())
+                handlePass(ox, oy, oCase.getPiece());
+            // checkPassing(ox, oy, oCase.getPiece(), true);
         printDebug(oCase.getPiece(), dCase.getPiece(), ox, oy, dx, dy);
         // handlePass(ox, oy,
         // this.cases[oy][ox].getPiece());

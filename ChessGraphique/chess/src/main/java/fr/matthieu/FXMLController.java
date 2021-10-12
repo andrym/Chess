@@ -94,7 +94,7 @@ public class FXMLController implements Initializable {
             Piece piece = this.mBoard.getCases()[oy][ox].getPiece();
 
             if (db.hasImage()) {
-                if (piece.getType() == "Pawn" && this.mBoard.checkPassing(dx, dy, piece, true)) {
+                if (piece.getType() == "Pawn" && piece.getPassed()) {
                     System.out.printf("DropAdded at x: %d y: %d\n", ox, (oy + piece.getMoves()[0][0]));
                     addDropHandling(this.panes[oy + piece.getMoves()[0][0]][ox]);
                 }
@@ -118,7 +118,7 @@ public class FXMLController implements Initializable {
             ClipboardContent cc = new ClipboardContent();
             SnapshotParameters param = new SnapshotParameters();
 
-            param.setTransform(Transform.translate(-50, -50));
+            param.setTransform(Transform.translate(-500, -500));
             db.setDragView(piece.snapshot(param, null));
             cc.putImage(piece.getImage());
             db.setContent(cc);

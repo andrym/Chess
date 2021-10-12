@@ -96,7 +96,10 @@ public abstract class Piece {
             return false;
         this.dir = 0;
         System.out.println("ismoveOKStart");
+        System.out.println("WAW2" + this.moves[0][0]);
         for (int[] move : this.moves) {
+            System.out.println("WAW");
+            System.out.printf("move1: %d move2: %d\n", move[0], move[1]);
             moveX = this.x + move[0];
             moveY = this.y + move[1];
             System.out.printf("IsMoveOk movex: %d moveY: %d x: %d y: %d move1: %d move0: %d thisx: %d thisy: %d\n", moveX, moveY, x, y, move[1], move[0], this.x, this.y);
@@ -104,6 +107,7 @@ public abstract class Piece {
                 return true;
             this.dir++;
         }
+        System.out.println("Pas OK");
         this.dir = -1;
         return false;
     }

@@ -16,7 +16,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(/*@SuppressWarnings("exports")*/ Stage s) throws IOException {
-        Stage stage = (new FXMLLoader(MainApp.class.getResource("/fxml/"+"primary" + ".fxml"))).load();
+        Stage stage = (new FXMLLoader(MainApp.class.getResource("/fxml/"+ "primary" + ".fxml"))).load();
         stage.setTitle("");
         stage.show();
     }
