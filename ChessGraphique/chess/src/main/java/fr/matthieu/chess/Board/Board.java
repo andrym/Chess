@@ -1,5 +1,10 @@
 package fr.matthieu.chess.board;
 
+import fr.matthieu.utils.InitEnum;
+import fr.matthieu.utils.Utils;
+
+import java.lang.reflect.InvocationTargetException;
+
 import fr.matthieu.chess.pieces.Bishop;
 import fr.matthieu.chess.pieces.King;
 import fr.matthieu.chess.pieces.Knight;
@@ -32,14 +37,32 @@ public class Board {
         generateEmptyCases();
     }
 
-    public void generateKing() {
-        this.cases[0][4] = new Case(0, 4, new King(0, 4, false));
-        this.cases[7][4] = new Case(7, 4, new King(7, 4, true));
+    private void createPiece(int x, int y, boolean white) {
+        try {
+            System.out.println("class: " + Utils.getPieceType(x, y));
+            this.cases[y][x] = new Case(y, x, (Piece) Class.forName(Utils.getPieceType(x, y)).getDeclaredConstructor(int.class, int.class, boolean.class).newInstance(y, x, white));
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+            System.out.println("OMG");
+            e.printStackTrace();
+        }
     }
 
-    public void generateQueen() {
+    public void generateKing() {
+        createPiece(4, 0, false);
+        createPiece(4, 7, true);
+    }
+
+    public void generateQueen()  {
+
         this.cases[0][3] = new Case(0, 3, new Queen(0, 3, false));
         this.cases[7][3] = new Case(7, 3, new Queen(7, 3, true));
+        // try {
+        //     System.out.println(Class.forName(this.cases[7][3].getPiece().getClass().getName()));
+        // } catch (ClassNotFoundException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
     }
 
     public void generateBishop() {

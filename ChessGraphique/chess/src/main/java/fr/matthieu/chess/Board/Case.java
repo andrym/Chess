@@ -16,6 +16,7 @@ public class Case {
         this.x = x;
         this.y = y;
         this.piece = piece;
+        System.out.println("case " + piece);
         if ((x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0)) {
             // this.mContent = new StringBuilder("\u001b[48;5;237m" + piece.getToken() + " \u001b[0m");
             this.color = Utils.WHITE;
