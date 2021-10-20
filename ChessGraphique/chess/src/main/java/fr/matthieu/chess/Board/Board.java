@@ -3,6 +3,7 @@ package fr.matthieu.chess.board;
 import fr.matthieu.utils.InitEnum;
 import fr.matthieu.utils.Utils;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import fr.matthieu.chess.pieces.Bishop;
@@ -37,31 +38,45 @@ public class Board {
         generateEmptyCases();
     }
 
-    private void createPiece(int x, int y, boolean white) {
+    private void createPiece(int x, int y, boolean side) {
         try {
+            Class<?> pieceClass = Class.forName(Utils.getPieceType(x, y));
+            System.out.println("PieceClass " + pieceClass.getName());
+            Constructor<?> pieceConstructor = pieceClass.getDeclaredConstructor(Integer.TYPE, Integer.TYPE,
+                    Boolean.TYPE);
+            System.out.println("WOW");
+            System.out.println("PieceConstructor " + pieceConstructor.getName());
+            this.cases[y][x] = new Case(y, x, (Piece) pieceConstructor.newInstance(y, x, side));
             System.out.println("class: " + Utils.getPieceType(x, y));
-            this.cases[y][x] = new Case(y, x, (Piece) Class.forName(Utils.getPieceType(x, y)).getDeclaredConstructor(int.class, int.class, boolean.class).newInstance(y, x, white));
+            // this.cases[y][x] = new Case(y, x, (Piece) Class.forName(Utils.getPieceType(x,
+            // y))
+            // .getDeclaredConstructor(int.class, int.class, boolean.class).newInstance(y,
+            // x, side));
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
                 | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
             System.out.println("OMG");
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
     public void generateKing() {
+
+        // this.cases[0][4] = new Case(0, 4, new King(0, 4, false));
+        // this.cases[7][4] = new Case(7, 4, new King(7, 4, true));
         createPiece(4, 0, false);
         createPiece(4, 7, true);
     }
 
-    public void generateQueen()  {
+    public void generateQueen() {
 
         this.cases[0][3] = new Case(0, 3, new Queen(0, 3, false));
         this.cases[7][3] = new Case(7, 3, new Queen(7, 3, true));
         // try {
-        //     System.out.println(Class.forName(this.cases[7][3].getPiece().getClass().getName()));
+        // System.out.println(Class.forName(this.cases[7][3].getPiece().getClass().getName()));
         // } catch (ClassNotFoundException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
         // }
     }
 
@@ -134,32 +149,31 @@ public class Board {
     public boolean checkPassing(int dx, int dy, Piece piece, boolean dropped) {
         Piece sidePiece = null;
 
+        piece.setPassed(false);
         if (dx >= 0 && dx < 7) {
             if (!this.cases[dy][dx + 1].isEmpty()) {
-                sidePiece = this.cases[dy][dx + 1].getPiece();
+                if (this.cases[dy][dx + 1].getPiece().getSide() != piece.getSide())
+                    sidePiece = this.cases[dy][dx + 1].getPiece();
             }
         }
         if (dx > 0 && dx <= 7) {
             if (!this.cases[dy][dx - 1].isEmpty()) {
-                sidePiece = this.cases[dy][dx - 1].getPiece();
+                if (this.cases[dy][dx - 1].getPiece().getSide() != piece.getSide())
+                    sidePiece = this.cases[dy][dx - 1].getPiece();
             }
         }
         if (sidePiece == null)
             return false;
-        if (sidePiece.getSide() != piece.getSide()) {
-            if (dropped) {
-                System.out.println(
-                        "Handle Pass x: " + piece.getY() + " y: " + piece.getX() + " Type: " + piece.getType() + "dir: " + piece.getDir());
-                // handlePass(piece.getY(), piece.getX(), piece);
-                piece.setPassed(true);
-            } else
-                System.out.println("PasDropped");
-                piece.setPassed(true);
-
-            return true;
-        }
         else
-            piece.setPassed(false);
+            System.out.printf("Sidepiece: type: %s side: %s", sidePiece.getType(), sidePiece.getSide());
+        if (dropped) {
+            System.out.println("Handle Pass x: " + piece.getY() + " y: " + piece.getX() + " Type: " + piece.getType()
+                    + "dir: " + piece.getDir());
+            // handlePass(piece.getY(), piece.getX(), piece);
+            piece.setPassed(true);
+        } else
+            System.out.println("PasDropped");
+        piece.setPassed(true);
         return false;
     }
 
@@ -197,7 +211,7 @@ public class Board {
         if (this.cases[oy][ox].getPiece() == null)
             System.out.println("CHEH");
         if (this.cases[oy][ox].getPiece().isMoveOk(dy, dx)) {
-            if (piece.getType() != "Knight" ) {
+            if (piece.getType() != "Knight") {
                 while (x != dx || y != dy) {
                     if (x + piece.getMoves()[piece.getDir()][1] >= 0 && x + piece.getMoves()[piece.getDir()][1] < 8)
                         x += piece.getMoves()[piece.getDir()][1];
@@ -207,7 +221,7 @@ public class Board {
                         return false;
                     if (!this.cases[y][x].isEmpty() && (x != dx || y != dy)) {
 
-                        return false; 
+                        return false;
                     }
                 }
             }
@@ -225,10 +239,11 @@ public class Board {
 
     public void printDebug(Piece oPiece, Piece dPiece, int ox, int oy, int dx, int dy) {
         if (dPiece != null)
-            System.out.printf("Piece: \norigin: %s | x: %d y: %d\ndest: %s | x: %d y: %d\n", oPiece.getType(), ox, oy, dPiece.getType(), dx,
-                    dy);
+            System.out.printf("Piece: \norigin: %s | x: %d y: %d\ndest: %s | x: %d y: %d\n", oPiece.getType(), ox, oy,
+                    dPiece.getType(), dx, dy);
         else
-            System.out.printf("Piece: \norigin: %s | x: %d y: %d\ndest: Empty | x: %d y: %d\n", oPiece.getType(), ox, oy, dx, dy);
+            System.out.printf("Piece: \norigin: %s | x: %d y: %d\ndest: Empty | x: %d y: %d\n", oPiece.getType(), ox,
+                    oy, dx, dy);
 
     }
 
@@ -236,7 +251,7 @@ public class Board {
         if (oCase.getPiece().getType() == "Pawn" && oCase.getPiece().getDir() == 3)
             if (oCase.getPiece().getPassed())
                 handlePass(ox, oy, oCase.getPiece());
-            // checkPassing(ox, oy, oCase.getPiece(), true);
+        // checkPassing(ox, oy, oCase.getPiece(), true);
         printDebug(oCase.getPiece(), dCase.getPiece(), ox, oy, dx, dy);
         // handlePass(ox, oy,
         // this.cases[oy][ox].getPiece());

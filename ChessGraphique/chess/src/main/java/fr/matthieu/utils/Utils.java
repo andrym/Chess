@@ -21,14 +21,14 @@ public class Utils {
 
     public static String getPieceType(int x, int y) {
         String output = "";
-        System.out.println(x + " " + y);
+        // System.out.println(x + " " + y);
         for (InitEnum value : InitEnum.values()) {
             if (value.x == x && value.y == y) {
-                System.out.println("inIF");
+                // System.out.println("inIF");
                 return value.className;
             }
-            System.out.println("PASINIF" + value.className);
-            System.out.printf("(%d, %d)\n", value.x, value.y);
+            // System.out.println("PASINIF" + value.className);
+            // System.out.printf("(%d, %d)\n", value.x, value.y);
         }
         return output;
     }
